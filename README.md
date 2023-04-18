@@ -4,12 +4,20 @@ pong.c
 <br />
 by Olivier Van Rompuy
 </p>
-<br />
 <p>Simple TCP port scan tool.</p>
 <p>Created as a simple test tool to verify that a server can be reached via it's service tcp port. I performs only a tcp connect/disconnect without sending or receiving any data.</p>
-<p>The name is a joke on ping which in many cases is not that useful to test network connectivity.</p>
-<br />
-Syntax : pong hostname port
-
-Example : pong 10.10.1.80 80
-
+<p>
+<pre>
+pong
+        -> Simple port scan tool for network connection testing
+        -> by Olivier Van Rompuy
+Syntax     :
+        pong HOSTNAME|IP [PORT1,PORT2,PORT3,...] [TIMEOUT]
+Examples   :
+        pong 127.0.0.1
+        pong 127.0.0.1 22
+        pong 127.0.0.1 22,80,443
+CSV Output :
+        HOST;PORT;ERRNO;ERRNO_DESCRIPTION
+</pre>
+</p>
