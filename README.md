@@ -10,10 +10,11 @@ by Olivier Van Rompuy
 <p>
 <pre>
 pong
-	-> Simple port scan tool for network connection testing
-	-> by Olivier Van Rompuy
+	Simple port scan tool for network connection testing
+	by Olivier Van Rompuy
 Syntax     :
-	pong HOSTNAME|IP [PORT1,PORT2,PORT3,PORTX-PORTY,...] [TIMEOUT]
+	pong [-r NRseconds] HOSTNAME|IP [PORT1,PORT2,PORT3,PORTX-PORTY,...] [TIMEOUT]
+		-r Repeat every nr of seconds
 Examples   :
 	pong 127.0.0.1
 	pong 127.0.0.1 22
@@ -21,6 +22,7 @@ Examples   :
 	pong 127.0.0.1 22,6000-6010,443
 CSV Output :
 	HOST;PORT;ERRNO;ERRNO_DESCRIPTION
+
 </pre>
 </p>
 # Build
