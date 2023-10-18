@@ -116,7 +116,7 @@ const unsigned char errno_strings[][2][134]={
 {{"EHOSTDOWN"},{"Host is down"}},
 {{"EHOSTUNREACH"},{"No route to host"}},
 {{"EALREADY"},{"Operation already in progress"}},
-{{"EINPROGRESS"},{"Operation now in progress"}},
+{{"EINPROGRESS"},{"Operation now in progress -> Connection Timeout"}},
 {{"ESTALE"},{"Stale file handle"}},
 {{"EUCLEAN"},{"Structure needs cleaning"}},
 {{"ENOTNAM"},{"Not a XENIX named type file"}},

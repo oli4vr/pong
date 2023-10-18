@@ -71,14 +71,36 @@ int string2ports(unsigned char *str, unsigned int *ports) {
  unsigned char buff[256]={0};
  unsigned char * sp=buff;
  unsigned char * sw=buff;
- unsigned char n, sz, nr=0;
+ unsigned char sz;
+ unsigned char rng=0;
+ unsigned int toport,i,n,nr=0;
  strncpy(buff,str,255);
  sz=strnlen(buff,255)+1;
  for(n=0;n<sz;n++) {
   if(*sp==0 || *sp==',') {
+    if (rng) {
+     *sp=0;
+     toport=atoi(sw);
+     sw=sp+1;
+     for(;i<=toport;i++) {
+      *ports=i;
+      ports++;
+      nr++;
+     }
+    } else {
+     *sp=0;
+     nr++;
+     *ports=atoi(sw);
+     ports++;
+     sw=sp+1;
+    }
+    rng=0;i=0;
+  } else if (*sp=='-') {
+    rng=1;
     *sp=0;
     nr++;
     *ports=atoi(sw);
+    i=*ports+1;
     ports++;
     sw=sp+1;
   } else if (*sp<'0' || *sp>'9') {
@@ -90,8 +112,8 @@ int string2ports(unsigned char *str, unsigned int *ports) {
 }
 
 int pong_ports(unsigned char * hostname,unsigned char *portstr, int timeout) {
- unsigned int ports[256];
- unsigned char nrports=0,n;
+ unsigned int ports[65536];
+ unsigned int nrports=0,n;
  int rc;
  nrports=string2ports(portstr,ports);
  if (nrports<0) return -1;  //Syntax error
@@ -106,8 +128,8 @@ int pong_ports(unsigned char * hostname,unsigned char *portstr, int timeout) {
 void helptext(unsigned char * cmd) {
  fprintf(stderr,"%s\n\t-> Simple port scan tool for network connection testing\n",cmd);
  fprintf(stderr,"\t-> by Olivier Van Rompuy\n");
- fprintf(stderr,"Syntax     :\n\t%s HOSTNAME|IP [PORT1,PORT2,PORT3,...] [TIMEOUT]\n",cmd);
- fprintf(stderr,"Examples   :\n\t%s 127.0.0.1\n\t%s 127.0.0.1 22\n\t%s 127.0.0.1 22,80,443\n",cmd,cmd,cmd);
+ fprintf(stderr,"Syntax     :\n\t%s HOSTNAME|IP [PORT1,PORT2,PORT3,PORTX-PORTY,...] [TIMEOUT]\n",cmd);
+ fprintf(stderr,"Examples   :\n\t%s 127.0.0.1\n\t%s 127.0.0.1 22\n\t%s 127.0.0.1 22,80,443\n\t%s 127.0.0.1 22,6000-6010,443\n",cmd,cmd,cmd,cmd);
  fprintf(stderr,"CSV Output :\n\tHOST;PORT;ERRNO;ERRNO_DESCRIPTION\n\n");
 }
 
