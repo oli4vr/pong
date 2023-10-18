@@ -126,9 +126,10 @@ int pong_ports(unsigned char * hostname,unsigned char *portstr, int timeout) {
 }
 
 void helptext(unsigned char * cmd) {
- fprintf(stderr,"%s\n\t-> Simple port scan tool for network connection testing\n",cmd);
- fprintf(stderr,"\t-> by Olivier Van Rompuy\n");
- fprintf(stderr,"Syntax     :\n\t%s HOSTNAME|IP [PORT1,PORT2,PORT3,PORTX-PORTY,...] [TIMEOUT]\n",cmd);
+ fprintf(stderr,"%s\n\tSimple port scan tool for network connection testing\n",cmd);
+ fprintf(stderr,"\tby Olivier Van Rompuy\n");
+ fprintf(stderr,"Syntax     :\n\t%s [-r NRseconds] HOSTNAME|IP [PORT1,PORT2,PORT3,PORTX-PORTY,...] [TIMEOUT]\n",cmd);
+ fprintf(stderr,"\t\t-r Repeat every nr of seconds\n");
  fprintf(stderr,"Examples   :\n\t%s 127.0.0.1\n\t%s 127.0.0.1 22\n\t%s 127.0.0.1 22,80,443\n\t%s 127.0.0.1 22,6000-6010,443\n",cmd,cmd,cmd,cmd);
  fprintf(stderr,"CSV Output :\n\tHOST;PORT;ERRNO;ERRNO_DESCRIPTION\n\n");
 }
@@ -140,12 +141,38 @@ int main(int argc,char ** argv)
  unsigned char hostname[64]={0};
  unsigned char badsyntax=0,rc;
  unsigned char timeout=2;
- if (argc<2) {helptext(argv[0]);return -1;}
- strncpy(hostname,argv[1],63);
- if (argc>2) {strncpy(ports,argv[2],255);}
- if (argc>3) {timeout=atoi(argv[3]);}
- rc=pong_ports(hostname,ports,timeout);
- if (rc<0) {helptext(argv[0]);return -2;}
+ unsigned char *ac;
+ unsigned char *cmd=argv[0];
+ unsigned char repeat=0;
+ if (argc<2) {helptext(cmd);return -1;}
+ argv++;
+ argc--;
+ ac=argv[0];
+
+ if (ac[0]=='-' && ac[1]=='r') {
+  argv++;
+  argc--;
+  if (argc<2) {helptext(cmd);return -1;}
+  repeat=atoi(argv[0]);
+  argv++;
+  argc--;
+ }
+
+ if (argc<1) {helptext(cmd);return -1;}
+ strncpy(hostname,argv[0],63);
+ if (argc>1) {strncpy(ports,argv[1],255);}
+ if (argc>2) {timeout=atoi(argv[2]);}
+
+ if (repeat>0) {
+  while (1) {
+   rc=pong_ports(hostname,ports,timeout);    
+   if (rc<0) {helptext(cmd);return -2;}
+   sleep(repeat);
+  }
+ } else {
+  rc=pong_ports(hostname,ports,timeout);
+ }
+ if (rc<0) {helptext(cmd);return -2;}
  return 0;
 }
 

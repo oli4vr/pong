@@ -5,7 +5,7 @@ pong.c
 by Olivier Van Rompuy
 </p>
 <p>Simple TCP port scan tool.</p>
-<p>Created as a simple test tool to verify that a server can be reached via it's service tcp port. I performs only a tcp connect/disconnect without sending or receiving any data.</p>
+<p>Created as a simple tcp connection test tool. (Which is sometimes a better test than an icmp "ping")</p>
 <p>You can provide a single port, a comma seperated list of ports, a port range or a combination of both</p>
 <p>
 <pre>
