@@ -23,3 +23,10 @@ CSV Output :
 	HOST;PORT;ERRNO;ERRNO_DESCRIPTION
 </pre>
 </p>
+# Build
+<pre># apt install gcc make
+(or yum/zypper/... install)
+# make
+# make install
+-> installs to ~/bin
+</pre>
